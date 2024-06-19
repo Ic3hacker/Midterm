@@ -1,0 +1,62 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class LockerApplication extends JFrame {
+    private JLabel titleLabel;
+    private JPasswordField passwordField;
+    private JButton enterButton;
+    private JLabel statusLabel;
+
+    private String savedPassword;
+    private boolean passwordSet = false;
+
+    public LockerApplication() {
+        setTitle("Locker Application");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(300, 200);
+        setLayout(new BorderLayout());
+
+        titleLabel = new JLabel("Enter your password:");
+        add(titleLabel, BorderLayout.NORTH);
+
+        passwordField = new JPasswordField(20);
+        add(passwordField, BorderLayout.CENTER);
+
+        enterButton = new JButton("Enter");
+        enterButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!passwordSet) {
+                    savedPassword = new String(passwordField.getPassword());
+                    passwordSet = true;
+                    statusLabel.setText("Password Set");
+                } else {
+                    String enteredPassword = new String(passwordField.getPassword());
+                    if (enteredPassword.equals(savedPassword)) {
+                        statusLabel.setText("Correct Password");
+                    } else {
+                        statusLabel.setText("Incorrect Password");
+                    }
+                }
+                passwordField.setText("");
+            }
+        });
+        add(enterButton, BorderLayout.SOUTH);
+
+        statusLabel = new JLabel();
+        add(statusLabel, BorderLayout.EAST);
+
+        setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new LockerApplication();
+            }
+        });
+    }
+}
